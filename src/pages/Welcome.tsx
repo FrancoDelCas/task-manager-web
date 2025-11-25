@@ -59,8 +59,6 @@ export default function Welcome() {
 
     const filePath = `${userId}/avatar/avatar.png`
 
-    console.log("file path upload", filePath)
-
     const { error: avatarError } = await supabase.storage
       .from("avatars")
       .upload(filePath, avatarFile, { upsert: true })
@@ -90,7 +88,7 @@ export default function Welcome() {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p>Cargando...</p>
+        <p>Loading...</p>
       </div>
     )
   }

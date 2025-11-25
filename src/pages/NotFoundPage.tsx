@@ -9,11 +9,11 @@ export default function NotFoundPage() {
         <CardContent className="flex flex-col items-center gap-6 p-8 text-center">
           <h1 className="text-3xl font-bold">404</h1>
           <p className="text-muted-foreground">
-            Lo sentimos, la página que buscas no existe.
+            We're sorry, the page you are looking for does not exist.
           </p>
           <div className="flex gap-4">
             <Button asChild variant="secondary">
-              <Link to="/dashboard">Ir al Inicio</Link>
+              <Link to="/dashboard">Go Home</Link>
             </Button>
           </div>
         </CardContent>

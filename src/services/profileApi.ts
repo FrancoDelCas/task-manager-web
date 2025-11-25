@@ -11,9 +11,9 @@ export async function updateProfile(
 
   const { data, error } = await supabase.auth.getSession();
 
-  if (error) throw new Error("No se pudo obtener la sesión");
+  if (error) throw new Error("failed to get supabase session");
   const accessToken = data.session?.access_token;
-  if (!accessToken) throw new Error("Usuario no autenticado");
+  if (!accessToken) throw new Error("User not authenticated");
 
   const response = await fetch(`${API_URL}/profiles/${profileId}`, {
     method: "PUT",
@@ -38,9 +38,9 @@ export async function updateProfile(
 export async function getProfile(profileId: string) {
     const { data, error } = await supabase.auth.getSession();
 
-    if (error) throw new Error("No se pudo obtener la sesión");
+    if (error) throw new Error("failed to get supabase session");
     const accessToken = data.session?.access_token;
-    if (!accessToken) throw new Error("Usuario no autenticado");
+    if (!accessToken) throw new Error("User not authenticated");
 
     const response = await fetch(`${API_URL}/profiles/${profileId}`, {
       method: "GET",

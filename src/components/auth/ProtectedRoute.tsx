@@ -23,7 +23,7 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <p>Loading...</p>;
   if (!session) return <Navigate to="/login" replace />;
 
   return children;

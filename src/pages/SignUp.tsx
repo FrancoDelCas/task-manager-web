@@ -74,7 +74,7 @@ export default function SignUp(): React.JSX.Element {
   if (checkingSession) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Cargando...</p>
+        <p>Loading...</p>
       </div>
     );
   }
