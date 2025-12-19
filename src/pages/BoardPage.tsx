@@ -27,9 +27,9 @@ import { TaskDialog } from "@/components/task/TaskDialog";
 import { useUserStore } from "@/store/userStore";
 
 const columns: { [key: string]: string } = {
-  todo: "Por hacer",
-  in_progress: "En progreso",
-  done: "Completado",
+  todo: "To do",
+  in_progress: "In progress",
+  done: "Done",
 };
 
 export default function BoardPage() {
@@ -69,7 +69,7 @@ export default function BoardPage() {
   }, [id, setCurrentBoardId]);
 
   // --- Drag and drop ---
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result;
     if (!destination) return;
     if (
@@ -78,13 +78,30 @@ export default function BoardPage() {
     )
       return;
 
+    // Update local state
+    const newStatus = destination.droppableId as TaskItem["status"];
     setTasks((prev) =>
       prev.map((task) =>
         task.id === draggableId
-          ? { ...task, status: destination.droppableId as TaskItem["status"] }
+          ? { ...task, status: newStatus }
           : task
       )
     );
+
+    // Persist the status change to the backend
+    try {
+      await updateTask(id, draggableId, { status: newStatus });
+    } catch (err) {
+      console.error("Error while updating task status:", err);
+      // Revert the update on error
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === draggableId
+            ? { ...task, status: source.droppableId as TaskItem["status"] }
+            : task
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -94,14 +111,13 @@ export default function BoardPage() {
         console.log("tasks data: ", data)
         setTasks(data);
       } catch (err) {
-        console.error("Error cargando tasks:", err);
+        console.error("Error while fetching tasks:", err);
       }
     };
 
     getTasks();
   }, [id]);
 
-  // añadir task
   const handleAddTask = async (values: {
     title: string;
     description: string;
@@ -115,11 +131,10 @@ export default function BoardPage() {
       setTasks((prev) => [...prev, newTask]);
       setOpenAddDialog(false);
     } catch (err) {
-      console.error("Error creando tarea:", err);
+      console.error("Error creating task:", err);
     }
   };
 
-  // actualizar task
   const handleUpdateTask = async (values: {
     title: string;
     description: string;
@@ -130,18 +145,17 @@ export default function BoardPage() {
       setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
       setEditingTask(null);
     } catch (err) {
-      console.error("Error actualizando tarea:", err);
+      console.error("Error updating task:", err);
     }
   };
 
-  // borrar task
   const handleDeleteTask = async (boardId: string, taskId: string) => {
     try {
       await deleteTask(boardId, taskId );
-      // Filtramos el task eliminado en el estado local
+      // filter the deleted task in the local state
       setTasks((prev) => prev.filter((t) => t.id !== taskId));
     } catch (err) {
-      console.error("Error eliminando task:", err);
+      console.error("Error deleting task:", err);
     }
   };
 

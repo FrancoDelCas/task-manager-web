@@ -60,11 +60,10 @@ export const createTask = async (
     return res.json();
 };
 
-// Actualizar task
 export const updateTask = async (
     boardId: string,
     taskId: string,
-    payload: { title: string; description?: string }
+    payload: { title?: string; description?: string; status?: "todo" | "in_progress" | "done" }
 ): Promise<TaskItem> => {
 
     const { data, error } = await supabase.auth.getSession();
