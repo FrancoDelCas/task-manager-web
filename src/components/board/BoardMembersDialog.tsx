@@ -15,18 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useBoardStore } from "@/store/boardStore";
 import { useUserStore } from "@/store/userStore";
 import { getBoardMembers } from "@/services/boardMembersApi";
-
-export type BoardMember = {
-  id: string;
-  role: "admin" | "member" | "viewer";
-  board_id: string;
-  profile: {
-    id: string;
-    email: string;
-    first_name: string | null;
-    last_name: string | null;
-  };
-};
+import type { BoardMember } from "@/types/boardMembers";
 
 export default function BoardMembersDialog() {
   const [open, setOpen] = useState(false);
@@ -87,9 +76,9 @@ export default function BoardMembersDialog() {
           <div key={m.id} className="flex border-b pb-2">
             <div className="flex items-center justify-between w-full">
               <div>
-                <p>{m.profile.email}</p>
+                <p>{m.profile?.email ?? "N/A"}</p>
                 <p className="text-xs text-muted-foreground">
-                  {m.profile.first_name ?? ""} {m.profile.last_name ?? ""}
+                  {m.profile?.first_name ?? ""} {m.profile?.last_name ?? ""}
                 </p>
               </div>
               <Badge

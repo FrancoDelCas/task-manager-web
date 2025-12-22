@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 import BoardMembersDialog from "@/components/board/BoardMembersDialog";
 
-import type { TaskItem } from "@/services/taskApi";
+import type { TaskItem } from "@/types/tasks";
 import { getUserRoleInBoard } from "@/services/boardMembersApi";
 
 import {

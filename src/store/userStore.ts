@@ -1,29 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-type UserProfile = {
-  first_name: string | null;
-  last_name: string | null;
-  avatar_url: string | null;
-  created_at?: string;
-  updated_at?: string;
-};
-
-interface UserStore {
-  id: string;
-  email: string | null;
-  profile: UserProfile | null;
-  boardRole: "admin" | "member" | "viewer" | null;
-
-  setUser: (
-    id: string,
-    email: string | null,
-    profile: UserProfile | null,
-    boardRole: "admin" | "member" | "viewer" | null
-  ) => void;
-  setBoardRole: (role: "admin" | "member" | "viewer") => void;
-  clear: () => void;
-}
+import type { UserStore } from "@/types/stores";
 
 export const useUserStore = create(
   persist<UserStore>(

@@ -1,4 +1,5 @@
 import { supabase } from "@/supabaseClient";
+import type { Profile } from "@/types/profiles";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,7 +8,7 @@ export async function updateProfile(
   firstName: string,
   lastName: string,
   avatarUrl: string
-) {
+): Promise<Profile> {
 
   const { data, error } = await supabase.auth.getSession();
 
@@ -35,7 +36,7 @@ export async function updateProfile(
   return await response.json();
 }
 
-export async function getProfile(profileId: string) {
+export async function getProfile(profileId: string): Promise<Profile> {
     const { data, error } = await supabase.auth.getSession();
 
     if (error) throw new Error("failed to get supabase session");

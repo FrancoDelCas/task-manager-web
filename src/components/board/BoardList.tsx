@@ -14,12 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
-
-interface Board {
-  id: string;
-  name: string;
-  description: string;
-}
+import type { Board } from "@/types/boards";
 
 interface BoardListProps {
   reload: boolean;

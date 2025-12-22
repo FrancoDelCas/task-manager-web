@@ -1,17 +1,7 @@
 import { supabase } from "@/supabaseClient";
+import type { TaskItem, CreateTaskInput, UpdateTaskInput } from "@/types/tasks";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-export type TaskItem = {
-    id: string;
-    title: string;
-    description: string;
-    status: "todo" | "in_progress" | "done";
-    board_id: string;
-    created_by: string;
-    created_at: string;
-    updated_at?: string;
-};
 
 
 // Obtener tasks de un board
@@ -36,7 +26,7 @@ export const fetchTasks = async (boardId: string): Promise<TaskItem[]> => {
 // Crear nueva task
 export const createTask = async (
     boardId: string,
-    payload: { title: string; description?: string; }
+    payload: CreateTaskInput
 ): Promise<TaskItem> => {
 
     const { data, error } = await supabase.auth.getSession();
@@ -63,7 +53,7 @@ export const createTask = async (
 export const updateTask = async (
     boardId: string,
     taskId: string,
-    payload: { title?: string; description?: string; status?: "todo" | "in_progress" | "done" }
+    payload: UpdateTaskInput
 ): Promise<TaskItem> => {
 
     const { data, error } = await supabase.auth.getSession();

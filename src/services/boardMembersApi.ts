@@ -1,19 +1,7 @@
 import { supabase } from "@/supabaseClient";
+import type { BoardMember, BoardMemberRole } from "@/types/boardMembers";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-export type BoardMember = {
-  id: string;
-  role: "admin" | "member" | "viewer";
-  board_id: string;
-  profile: {
-    id: string;
-    email: string;
-    first_name: string | null;
-    last_name: string | null;
-    avatar_url?: string | null;
-  };
-};
 
 export async function getBoardMembers(boardId: string): Promise<BoardMember[]> {
   const { data, error } = await supabase.auth.getSession();
@@ -39,7 +27,7 @@ export async function getBoardMembers(boardId: string): Promise<BoardMember[]> {
   return members;
 }
 
-export const getUserRoleInBoard = async (boardId: string) => {
+export const getUserRoleInBoard = async (boardId: string): Promise<BoardMemberRole> => {
   const { data, error } = await supabase.auth.getSession();
 
   if (error) throw new Error("failed to get supabase session");

@@ -6,20 +6,14 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { TaskItem } from "@/services/taskApi";
+import type { TaskItem } from "@/types/tasks";
 import { getProfile } from "@/services/profileApi";
+import type { UserProfile } from "@/types/profiles";
 
 export type TaskDialogProps = {
   task?: TaskItem;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
-
-type UserProfile = {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  email: string;
 };
 
 export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
@@ -32,7 +26,15 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       try {
         const profile = await getProfile(task.created_by);
         console.log("get profile:", profile)
-        setCreator(profile);
+        // Convert Profile to UserProfile format
+        if (profile.email) {
+          setCreator({
+            id: profile.id,
+            first_name: profile.first_name,
+            last_name: profile.last_name,
+            email: profile.email,
+          });
+        }
       } catch (err) {
         console.error("Error obteniendo perfil:", err);
         setCreator(null);

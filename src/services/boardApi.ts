@@ -1,11 +1,12 @@
 import { supabase } from "@/supabaseClient";
+import type { Board } from "@/types/boards";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function createBoard(
   name: string,
   description: string
-) {
+): Promise<Board> {
   const { data, error } = await supabase.auth.getSession();
 
   if (error) throw new Error("No se pudo obtener la sesión");
@@ -54,7 +55,7 @@ export async function deleteBoard(
   return true;
 }
 
-export async function getBoards() {
+export async function getBoards(): Promise<Board[]> {
     const { data, error } = await supabase.auth.getSession();
   
     if (error) throw new Error("No se pudo obtener la sesión");
